@@ -28,8 +28,12 @@ public class GameActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.sudoku_grid);
         int[] puzzle = getIntent().getIntArrayExtra("puzzle");
-        if (puzzle != null) {
+        if (puzzle != null && puzzle.length == 81) {
             gridView.setPuzzle(puzzle);
+        } else {
+            Toast.makeText(this, "Invalid puzzle data. Returning to selection.", Toast.LENGTH_SHORT).show();
+            finish(); // Return to PuzzleSelectionActivity if puzzle is invalid
+            return;
         }
 
         for (int i = 1; i <= 9; i++) {

@@ -56,6 +56,8 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
 
     private class GeneratePuzzleTask extends AsyncTask<Void, Void, int[]> {
         private ProgressDialog progressDialog;
+        private int lastRemovedRow = -1; // Store the last removed row
+        private int lastRemovedCol = -1; // Store the last removed column
 
         @Override
         protected void onPreExecute() {
@@ -68,18 +70,26 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
         @Override
         protected int[] doInBackground(Void... voids) {
             int[][] grid = new int[9][9];
-            if (!generateSudoku(grid)) {
-                return null; // Fail gracefully if generation fails
-            }
-            removeCells(grid, selectedDifficulty.equals("Easy") ? 40 : selectedDifficulty.equals("Medium") ? 50 :
-                    selectedDifficulty.equals("Hard") ? 60 : 65);
-            int[] flatGrid = new int[81];
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    flatGrid[i * 9 + j] = grid[i][j];
+            try {
+                if (!generateSudoku(grid)) {
+                    return null; // Fail gracefully if generation fails
                 }
+                removeCells(grid, selectedDifficulty.equals("Easy") ? 40 : selectedDifficulty.equals("Medium") ? 50 :
+                        selectedDifficulty.equals("Hard") ? 60 : 65);
+                int[] flatGrid = new int[81];
+                for (int i = 0; i < 9; i++) {
+                    for (int j = 0; j < 9; j++) {
+                        flatGrid[i * 9 + j] = grid[i][j];
+                    }
+                }
+                if (!isSolvable(grid)) {
+                    return null; // Fail if the puzzle isn’t solvable
+                }
+                return flatGrid;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null; // Handle any unexpected errors gracefully
             }
-            return flatGrid;
         }
 
         @Override
@@ -90,7 +100,7 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
                 intent.putExtra("puzzle", result);
                 startActivity(intent);
             } else {
-                Toast.makeText(PuzzleSelectionActivity.this, "Failed to generate puzzle. Please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PuzzleSelectionActivity.this, "Failed to generate a valid puzzle. Please try again.", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -150,15 +160,29 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
                 int col = rand.nextInt(9);
                 if (grid[row][col] != 0) {
                     grid[row][col] = 0;
+                    lastRemovedRow = row; // Store the last removed position
+                    lastRemovedCol = col;
                     removed++;
                 }
             }
-            // Ensure the puzzle is solvable (simplified check)
+            // Ensure the puzzle is solvable
             if (!isSolvable(grid)) {
-                // Revert the last removal and try again (simplified for brevity)
-                // In a real implementation, you'd implement a more robust check
-                grid[row][col] = 1; // Revert last removal (example fix)
+                // Revert the last removal using stored values
+                if (lastRemovedRow != -1 && lastRemovedCol != -1) {
+                    int originalValue = findOriginalValue(grid, lastRemovedRow, lastRemovedCol);
+                    grid[lastRemovedRow][lastRemovedCol] = originalValue; // Revert to a valid number
+                }
             }
+        }
+
+        private int findOriginalValue(int[][] grid, int row, int col) {
+            // Simplified: Try to find a valid number that makes the puzzle solvable
+            for (int num = 1; num <= 9; num++) {
+                if (isSafe(grid, row, col, num)) {
+                    return num; // Return the first valid number
+                }
+            }
+            return 1; // Default to 1 if no valid number found (shouldn’t happen with proper generation)
         }
 
         private boolean isSolvable(int[][] grid) {
