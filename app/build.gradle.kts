@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace = "com.example.smart_ai_sudoku_solver"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.smart_ai_sudoku_solver"
-        minSdk = 24
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -32,10 +32,15 @@ android {
 }
 
 dependencies {
-
-    implementation ("androidx.appcompat:appcompat:1.7.0")
-    implementation ("androidx.constraintlayout:constraintlayout:2.2.0")
-    implementation ("com.google.android.material:material:1.12.0")
+    dependencies {
+        implementation (libs.appcompat)
+        implementation (libs.constraintlayout)
+        implementation (libs.material) // Latest stable version (update if needed)
+        // Other dependencies...
+    }
+    implementation (libs.appcompat)
+    implementation (libs.constraintlayout)
+    implementation (libs.material)
     implementation (libs.appcompat)
     implementation (libs.constraintlayout)
     implementation(libs.appcompat.v161)
