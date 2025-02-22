@@ -9,9 +9,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#1976D2"
+        android:background="@color/primary_blue"
         android:title="Custom Puzzle"
-        android:titleTextColor="#FFFFFF"
+        android:titleTextColor="@color/white"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.smart_ai_sudoku_solver.SudokuGridView
@@ -45,17 +45,16 @@
         <Button android:id="@+id/num_x" android:text="X" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
     </GridLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/check_puzzle_button"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="Check Puzzle"
         android:backgroundTint="@color/primary_blue"
-        android:textColor="#FFFFFF"
-        android:layout_margin="16dp"
         android:background="@drawable/rounded_corner"
+        android:textColor="@color/white"
+        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

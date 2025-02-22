@@ -32,12 +32,19 @@ android {
 }
 
 dependencies {
+
     dependencies {
+        implementation ("androidx.appcompat:appcompat:1.7.0")
+        implementation ("androidx.constraintlayout:constraintlayout:2.2.0")
+        // Remove or comment out: implementation 'com.google.android.material:material:1.11.0'
+        // Other dependencies...
+    }
+
         implementation (libs.appcompat)
         implementation (libs.constraintlayout)
         implementation (libs.material) // Latest stable version (update if needed)
-        // Other dependencies...
-    }
+
+
     implementation (libs.appcompat)
     implementation (libs.constraintlayout)
     implementation (libs.material)

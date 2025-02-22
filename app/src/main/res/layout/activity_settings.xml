@@ -26,14 +26,14 @@
         android:layout_height="wrap_content"
         android:max="900" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/reset_button"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="Reset Preferences"
-        android:backgroundTint="#1976D2"
-        android:textColor="#FFFFFF"
-        android:cornerRadius="8dp"
+        android:backgroundTint="@color/primary_blue"
+        android:background="@drawable/rounded_corner"
+        android:textColor="@color/white"
         android:layout_gravity="center"
         android:layout_marginTop="32dp" />
 </LinearLayout>

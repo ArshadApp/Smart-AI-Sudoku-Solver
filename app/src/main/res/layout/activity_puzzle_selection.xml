@@ -24,7 +24,7 @@
         android:text="Easy (30-40 clues)"
         android:textColor="@color/white" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/medium_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
