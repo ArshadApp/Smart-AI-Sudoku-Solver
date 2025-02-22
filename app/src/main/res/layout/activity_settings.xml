@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:id="@+id/main"> <!-- Add an ID here if not present -->
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/dark_mode_switch"
