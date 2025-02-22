@@ -7,4 +7,5 @@
     <color name="medium_yellow">#FFCA28</color> <!-- For medium_button background -->
     <color name="hard_orange">#F4511E</color> <!-- For hard_button background -->
     <color name="expert_red">#D81B60</color> <!-- For expert_button background -->
+    <color name="my_light_primary">@color/primary_blue</color> <!-- Optional custom primary color -->
 </resources>

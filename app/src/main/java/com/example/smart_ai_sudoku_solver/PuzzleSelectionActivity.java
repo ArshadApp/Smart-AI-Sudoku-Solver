@@ -3,6 +3,7 @@ package com.example.smart_ai_sudoku_solver;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.app.ProgressDialog;
 import android.widget.Toast;
 
 public class PuzzleSelectionActivity extends AppCompatActivity {
+    private static final String TAG = "PuzzleSelectionActivity";
     private String selectedDifficulty = "Easy";
     private Button startButton;
 
@@ -36,7 +38,7 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
                 mediumButton.setBackgroundTintList(null);
                 hardButton.setBackgroundTintList(null);
                 expertButton.setBackgroundTintList(null);
-                v.setBackgroundTintList(getResources().getColorStateList(R.color.black));
+                v.setBackgroundTintList(getResources().getColorStateList(R.color.white));
                 selectedDifficulty = ((Button) v).getText().toString().split(" ")[0];
             }
         };
@@ -71,23 +73,33 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
         protected int[] doInBackground(Void... voids) {
             int[][] grid = new int[9][9];
             try {
+                Log.d(TAG, "Starting puzzle generation for difficulty: " + selectedDifficulty);
                 if (!generateSudoku(grid)) {
+                    Log.e(TAG, "Failed to generate a valid Sudoku grid");
                     return null; // Fail gracefully if generation fails
                 }
-                removeCells(grid, selectedDifficulty.equals("Easy") ? 40 : selectedDifficulty.equals("Medium") ? 50 :
-                        selectedDifficulty.equals("Hard") ? 60 : 65);
+                int removeCount = selectedDifficulty.equals("Easy") ? 40 : selectedDifficulty.equals("Medium") ? 50 :
+                        selectedDifficulty.equals("Hard") ? 60 : 65;
+                removeCells(grid, removeCount);
                 int[] flatGrid = new int[81];
                 for (int i = 0; i < 9; i++) {
                     for (int j = 0; j < 9; j++) {
                         flatGrid[i * 9 + j] = grid[i][j];
+                        Log.d(TAG, "Grid[" + i + "][" + j + "] = " + grid[i][j]);
                     }
                 }
                 if (!isSolvable(grid)) {
-                    return null; // Fail if the puzzle isn’t solvable
+                    Log.w(TAG, "Puzzle is not solvable after removals, reverting");
+                    revertLastRemoval(grid);
+                    if (!isSolvable(grid)) {
+                        Log.e(TAG, "Failed to create a solvable puzzle after retry");
+                        return null;
+                    }
                 }
+                Log.d(TAG, "Puzzle generated successfully");
                 return flatGrid;
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "Error generating puzzle: " + e.getMessage(), e);
                 return null; // Handle any unexpected errors gracefully
             }
         }
@@ -107,6 +119,7 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
         private boolean generateSudoku(int[][] grid) {
             // Backtracking to generate a valid 9x9 Sudoku grid
             if (!fillGrid(grid, 0, 0)) {
+                Log.e(TAG, "Backtracking failed to generate a valid grid");
                 return false; // Failed to generate a valid grid
             }
             return true;
@@ -167,22 +180,23 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
             }
             // Ensure the puzzle is solvable
             if (!isSolvable(grid)) {
-                // Revert the last removal using stored values
-                if (lastRemovedRow != -1 && lastRemovedCol != -1) {
-                    int originalValue = findOriginalValue(grid, lastRemovedRow, lastRemovedCol);
-                    grid[lastRemovedRow][lastRemovedCol] = originalValue; // Revert to a valid number
-                }
+                revertLastRemoval(grid);
             }
         }
 
-        private int findOriginalValue(int[][] grid, int row, int col) {
-            // Simplified: Try to find a valid number that makes the puzzle solvable
-            for (int num = 1; num <= 9; num++) {
-                if (isSafe(grid, row, col, num)) {
-                    return num; // Return the first valid number
+        private void revertLastRemoval(int[][] grid) {
+            if (lastRemovedRow != -1 && lastRemovedCol != -1) {
+                // Try to find a valid number for the last removed cell
+                for (int num = 1; num <= 9; num++) {
+                    if (isSafe(grid, lastRemovedRow, lastRemovedCol, num)) {
+                        grid[lastRemovedRow][lastRemovedCol] = num;
+                        break;
+                    }
                 }
+                // Reset after reversion
+                lastRemovedRow = -1;
+                lastRemovedCol = -1;
             }
-            return 1; // Default to 1 if no valid number found (shouldn’t happen with proper generation)
         }
 
         private boolean isSolvable(int[][] grid) {

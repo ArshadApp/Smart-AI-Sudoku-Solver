@@ -3,6 +3,7 @@ package com.example.smart_ai_sudoku_solver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity {
+    private static final String TAG = "GameActivity";
     private SudokuGridView gridView;
     private TextView timerText;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -29,8 +31,10 @@ public class GameActivity extends AppCompatActivity {
         gridView = findViewById(R.id.sudoku_grid);
         int[] puzzle = getIntent().getIntArrayExtra("puzzle");
         if (puzzle != null && puzzle.length == 81) {
+            Log.d(TAG, "Received valid puzzle data: " + puzzle.length + " cells");
             gridView.setPuzzle(puzzle);
         } else {
+            Log.e(TAG, "Invalid or null puzzle data received");
             Toast.makeText(this, "Invalid puzzle data. Returning to selection.", Toast.LENGTH_SHORT).show();
             finish(); // Return to PuzzleSelectionActivity if puzzle is invalid
             return;
