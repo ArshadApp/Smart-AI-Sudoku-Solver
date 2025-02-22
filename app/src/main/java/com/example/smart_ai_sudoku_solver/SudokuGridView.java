@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +15,7 @@ public class SudokuGridView extends View {
     private int selectedRow = -1;
     private int selectedCol = -1;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     public SudokuGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -29,8 +32,11 @@ public class SudokuGridView extends View {
 
     public void fillSelectedCell(int value) {
         if (selectedRow != -1 && grid[selectedRow][selectedCol] != -1) {
-            grid[selectedRow][selectedCol] = value;
-            invalidate();
+            // Use Handler to ensure UI update happens on the main thread
+            handler.post(() -> {
+                grid[selectedRow][selectedCol] = value;
+                invalidate(); // Redraw immediately
+            });
         }
     }
 
@@ -56,6 +62,31 @@ public class SudokuGridView extends View {
             canvas.drawLine(i * cellSize, 0, i * cellSize, getHeight(), paint);
         }
         // Add bold 3x3 borders, numbers, and highlights here (implement as needed)
+        drawNumbers(canvas, cellSize);
+    }
+
+    private void drawNumbers(Canvas canvas, float cellSize) {
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(40f);
+        paint.setTextAlign(Paint.Align.CENTER);
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (grid[i][j] != 0) {
+                    canvas.drawText(String.valueOf(grid[i][j]),
+                            j * cellSize + cellSize / 2,
+                            i * cellSize + cellSize / 2 + 15, // Adjust for text centering
+                            paint);
+                }
+            }
+        }
+        // Highlight selected cell (if any)
+        if (selectedRow != -1 && selectedCol != -1) {
+            paint.setColor(Color.YELLOW);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(4f);
+            canvas.drawRect(selectedCol * cellSize, selectedRow * cellSize,
+                    (selectedCol + 1) * cellSize, (selectedRow + 1) * cellSize, paint);
+        }
     }
 
     @Override

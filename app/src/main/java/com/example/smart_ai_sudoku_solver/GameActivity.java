@@ -6,10 +6,9 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity {
     private SudokuGridView gridView;
@@ -29,7 +28,9 @@ public class GameActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.sudoku_grid);
         int[] puzzle = getIntent().getIntArrayExtra("puzzle");
-        if (puzzle != null) gridView.setPuzzle(puzzle);
+        if (puzzle != null) {
+            gridView.setPuzzle(puzzle);
+        }
 
         for (int i = 1; i <= 9; i++) {
             Button btn = findViewById(getResources().getIdentifier("num_" + i, "id", getPackageName()));
@@ -37,14 +38,15 @@ public class GameActivity extends AppCompatActivity {
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    gridView.fillSelectedCell(value);
+                    gridView.fillSelectedCell(value); // Optimized to use Handler in SudokuGridView
                 }
             });
         }
-        findViewById(R.id.num_x).setOnClickListener(new View.OnClickListener() {
+        Button eraseButton = findViewById(R.id.num_x);
+        eraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gridView.fillSelectedCell(0);
+                gridView.fillSelectedCell(0); // Optimized to use Handler in SudokuGridView
             }
         });
 
