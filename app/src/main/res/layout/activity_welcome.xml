@@ -36,28 +36,26 @@
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="Play Now"
-        android:backgroundTint="@color/primary_blue"
-        android:background="@drawable/rounded_corner"
+        android:backgroundTint="#17314D"
         android:textColor="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/custom_puzzle_button"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="Custom Puzzle"
         android:backgroundTint="@color/medium_yellow"
-        android:background="@drawable/rounded_corner"
         android:textColor="@color/white"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/play_now_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageButton
+    <Button
         android:id="@+id/settings_button"
         android:layout_width="36dp"
         android:layout_height="36dp"

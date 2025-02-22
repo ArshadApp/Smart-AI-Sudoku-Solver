@@ -20,18 +20,16 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:backgroundTint="@color/easy_green"
-        android:background="@drawable/rounded_corner"
         android:text="Easy (30-40 clues)"
         android:textColor="@color/white" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/medium_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/medium_yellow"
-        android:background="@drawable/rounded_corner"
         android:text="Medium (41-50 clues)"
         android:textColor="@color/white" />
 
@@ -42,7 +40,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/hard_orange"
-        android:background="@drawable/rounded_corner"
         android:text="Hard (51-60 clues)"
         android:textColor="@color/white" />
 
@@ -53,7 +50,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/expert_red"
-        android:background="@drawable/rounded_corner"
         android:text="Expert (61+ clues)"
         android:textColor="@color/white" />
 
@@ -64,7 +60,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/primary_blue"
-        android:background="@drawable/rounded_corner"
         android:text="Start Puzzle"
         android:textColor="@color/white" />
 </LinearLayout>

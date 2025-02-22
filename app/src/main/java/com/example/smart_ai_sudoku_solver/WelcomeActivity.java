@@ -7,7 +7,6 @@ import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,7 +31,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         // Button interactions
         Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        final MediaPlayer clickSound = MediaPlayer.create(this, R.raw.click);
+        final MediaPlayer clickSound = MediaPlayer.create(this, R.raw.click); // This should now work
 
         playNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +42,9 @@ public class WelcomeActivity extends AppCompatActivity {
                         v.animate().scaleX(1f).scaleY(1f).setDuration(100).start();
                     }
                 }).start();
-                clickSound.start();
+                if (clickSound != null) {
+                    clickSound.start();
+                }
                 vibrator.vibrate(10);
                 startActivity(new Intent(WelcomeActivity.this, PuzzleSelectionActivity.class));
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -67,7 +68,9 @@ public class WelcomeActivity extends AppCompatActivity {
                         v.animate().scaleX(1f).scaleY(1f).setDuration(100).start();
                     }
                 }).start();
-                clickSound.start();
+                if (clickSound != null) {
+                    clickSound.start();
+                }
                 vibrator.vibrate(10);
                 startActivity(new Intent(WelcomeActivity.this, CustomPuzzleActivity.class));
             }
