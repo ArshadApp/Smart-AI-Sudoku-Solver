@@ -14,7 +14,7 @@
         android:titleTextColor="#FFFFFF"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.smartaisudokusolver.SudokuGridView
+    <com.example.smart_ai_sudoku_solver.SudokuGridView
         android:id="@+id/sudoku_grid"
         android:layout_width="360dp"
         android:layout_height="360dp"
@@ -52,9 +52,10 @@
         android:text="Check Puzzle"
         android:backgroundTint="#1976D2"
         android:textColor="#FFFFFF"
-        android:cornerRadius="8dp"
         android:layout_margin="16dp"
+        android:background="@drawable/rounded_corner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
