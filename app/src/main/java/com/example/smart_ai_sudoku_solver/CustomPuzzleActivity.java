@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -46,8 +45,12 @@ public class CustomPuzzleActivity extends AppCompatActivity {
                 if (isValidPuzzle(gridView.getGrid())) {
                     Intent intent = new Intent(CustomPuzzleActivity.this, GameActivity.class);
                     int[] flatGrid = new int[81];
-                    for (int i = 0; i < 9; i++)
-                        for (int j = 0; j < 9; j++) flatGrid[i * 9 + j] = gridView.getGrid()[i][j];
+                    int[][] grid = gridView.getGrid();
+                    for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                            flatGrid[i * 9 + j] = grid[i][j];
+                        }
+                    }
                     intent.putExtra("puzzle", flatGrid);
                     startActivity(intent);
                 } else {
@@ -58,10 +61,7 @@ public class CustomPuzzleActivity extends AppCompatActivity {
     }
 
     private boolean isValidPuzzle(int[][] grid) {
-        // Implement validation logic
-        return true;
+        // Implement validation logic (e.g., check for conflicts and ensure solvability)
+        return true; // Placeholder; replace with actual validation
     }
-
-    // Update SudokuGridView to include getGrid() method:
-    // public int[][] getGrid() { return grid; }
 }

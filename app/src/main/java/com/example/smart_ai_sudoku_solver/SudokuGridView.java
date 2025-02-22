@@ -8,10 +8,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-
 public class SudokuGridView extends View {
-    private int[][] grid = new int[9][9];
+    private int[][] grid = new int[9][9]; // 9x9 grid to store Sudoku puzzle
     private int selectedRow = -1;
     private int selectedCol = -1;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -21,8 +19,11 @@ public class SudokuGridView extends View {
     }
 
     public void setPuzzle(int[] puzzle) {
-        for (int i = 0; i < 9; i++)
-            for (int j = 0; j < 9; j++) grid[i][j] = puzzle[i * 9 + j];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                grid[i][j] = puzzle[i * 9 + j];
+            }
+        }
         invalidate();
     }
 
@@ -34,15 +35,19 @@ public class SudokuGridView extends View {
     }
 
     public Move getHint() {
-        return new Move(0, 0, 5); // Simplified hint logic
+        return new Move(0, 0, 5); // Simplified hint logic (replace with actual implementation)
     }
 
     public void solveAnimated() {
-        // Implement solver with animation
+        // Implement solver with animation (placeholder for now)
+    }
+
+    public int[][] getGrid() {
+        return grid; // Method to return the grid
     }
 
     @Override
-    protected void onDraw(@NonNull Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
         float cellSize = getWidth() / 9f;
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(2f);
@@ -50,14 +55,14 @@ public class SudokuGridView extends View {
             canvas.drawLine(0, i * cellSize, getWidth(), i * cellSize, paint);
             canvas.drawLine(i * cellSize, 0, i * cellSize, getHeight(), paint);
         }
-        // Add bold 3x3 borders, numbers, and highlights
+        // Add bold 3x3 borders, numbers, and highlights here (implement as needed)
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            selectedRow = (int) (event.getY() / ((float) getHeight() / 9));
-            selectedCol = (int) (event.getX() / ((float) getWidth() / 9));
+            selectedRow = (int) (event.getY() / (getHeight() / 9));
+            selectedCol = (int) (event.getX() / (getWidth() / 9));
             invalidate();
             return true;
         }
