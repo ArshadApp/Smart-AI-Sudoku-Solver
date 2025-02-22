@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primary_blue">#1976D2</color> <!-- For Toolbar and start_puzzle_button background -->
+    <color name="easy_green">#4CAF50</color> <!-- For easy_button background -->
+    <color name="medium_yellow">#FFCA28</color> <!-- For medium_button background -->
+    <color name="hard_orange">#F4511E</color> <!-- For hard_button background -->
+    <color name="expert_red">#D81B60</color> <!-- For expert_button background -->
 </resources>

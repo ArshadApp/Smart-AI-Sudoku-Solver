@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,19 +10,19 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#1976D2"
+        android:background="@color/primary_blue"
         android:title="Select Difficulty"
-        android:titleTextColor="#FFFFFF" />
+        android:titleTextColor="@color/white" />
 
     <Button
         android:id="@+id/easy_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        android:backgroundTint="#4CAF50"
-        android:cornerRadius="8dp"
+        android:backgroundTint="@color/easy_green"
+        android:background="@drawable/rounded_corner"
         android:text="Easy (30-40 clues)"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/medium_button"
@@ -29,10 +30,10 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#FFCA28"
-        android:cornerRadius="8dp"
+        android:backgroundTint="@color/medium_yellow"
+        android:background="@drawable/rounded_corner"
         android:text="Medium (41-50 clues)"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/hard_button"
@@ -40,10 +41,10 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#F4511E"
-        android:cornerRadius="8dp"
+        android:backgroundTint="@color/hard_orange"
+        android:background="@drawable/rounded_corner"
         android:text="Hard (51-60 clues)"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/expert_button"
@@ -51,10 +52,10 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#D81B60"
-        android:cornerRadius="8dp"
+        android:backgroundTint="@color/expert_red"
+        android:background="@drawable/rounded_corner"
         android:text="Expert (61+ clues)"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/start_puzzle_button"
@@ -62,8 +63,8 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="32dp"
-        android:backgroundTint="#1976D2"
-        android:cornerRadius="8dp"
+        android:backgroundTint="@color/primary_blue"
+        android:background="@drawable/rounded_corner"
         android:text="Start Puzzle"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/white" />
 </LinearLayout>

@@ -50,7 +50,7 @@
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="Check Puzzle"
-        android:backgroundTint="#1976D2"
+        android:backgroundTint="@color/primary_blue"
         android:textColor="#FFFFFF"
         android:layout_margin="16dp"
         android:background="@drawable/rounded_corner"
