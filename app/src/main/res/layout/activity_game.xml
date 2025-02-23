@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,7 +28,7 @@
 
     <com.example.smart_ai_sudoku_solver.SudokuGridView
         android:id="@+id/sudoku_grid"
-        android:layout_width="360dp"
+        android:layout_width="wrap_content"
         android:layout_height="360dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
@@ -46,90 +45,90 @@
             android:id="@+id/num_1"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="1"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="1"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/num_2"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="2"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="2"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/num_3"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="3"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="3"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/num_4"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="4"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="4"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/num_5"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="5"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="5"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/num_6"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="6"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="6"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/num_7"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="7"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="7"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/num_8"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="8"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="8"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/num_9"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="9"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="9"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/num_x"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:text="X"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/blue"
+            android:text="X"
             android:textColor="@color/white" />
 
     </GridLayout>
@@ -143,7 +142,7 @@
 
         <ImageButton
             android:id="@+id/hint_button"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
             android:background="@null"
@@ -151,7 +150,7 @@
 
         <ImageButton
             android:id="@+id/solve_button"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
             android:background="@null"
@@ -159,7 +158,7 @@
 
         <ImageButton
             android:id="@+id/undo_button"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
             android:background="@null"
@@ -167,11 +166,42 @@
 
         <ImageButton
             android:id="@+id/redo_button"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:background="@null"
             android:src="@drawable/ic_redo" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15sp"
+            android:text="Hint" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15sp"
+            android:text="Solve" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15sp"
+            android:text="Undo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15sp"
+            android:text="Redo" />
     </LinearLayout>
 
     <TextView
@@ -179,7 +209,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:text="Cells Filled: 0/81"
         android:textColor="#000000"
         android:textSize="16sp" />
