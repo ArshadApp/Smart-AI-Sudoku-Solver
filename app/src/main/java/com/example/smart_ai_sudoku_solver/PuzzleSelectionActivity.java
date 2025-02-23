@@ -40,6 +40,7 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
                 expertButton.setBackgroundTintList(null);
                 v.setBackgroundTintList(getResources().getColorStateList(R.color.white));
                 selectedDifficulty = ((Button) v).getText().toString().split(" ")[0];
+                Log.d(TAG, "Selected difficulty: " + selectedDifficulty);
             }
         };
 
@@ -51,6 +52,7 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Starting puzzle generation for: " + selectedDifficulty);
                 new GeneratePuzzleTask().execute();
             }
         });
@@ -96,7 +98,7 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
                         return null;
                     }
                 }
-                Log.d(TAG, "Puzzle generated successfully");
+                Log.d(TAG, "Puzzle generated successfully: " + flatGrid.length + " cells");
                 return flatGrid;
             } catch (Exception e) {
                 Log.e(TAG, "Error generating puzzle: " + e.getMessage(), e);
@@ -108,11 +110,13 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
         protected void onPostExecute(int[] result) {
             progressDialog.dismiss();
             if (result != null) {
+                Log.d(TAG, "Navigating to GameActivity with puzzle data");
                 Intent intent = new Intent(PuzzleSelectionActivity.this, GameActivity.class);
                 intent.putExtra("puzzle", result);
                 startActivity(intent);
             } else {
                 Toast.makeText(PuzzleSelectionActivity.this, "Failed to generate a valid puzzle. Please try again.", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Puzzle generation failed, staying in PuzzleSelectionActivity");
             }
         }
 
@@ -203,6 +207,10 @@ public class PuzzleSelectionActivity extends AppCompatActivity {
             // Simplified solvability check: try to solve and verify a solution exists
             int[][] tempGrid = new int[9][9];
             for (int i = 0; i < 9; i++) {
+                if (tempGrid[i] == null) {
+                    Log.e(TAG, "Temp grid initialization failed at row " + i);
+                    return false;
+                }
                 tempGrid[i] = grid[i].clone();
             }
             return solveSudoku(tempGrid, 0, 0);

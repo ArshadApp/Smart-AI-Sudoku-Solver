@@ -15,44 +15,48 @@
         android:title="Select Difficulty"
         android:titleTextColor="@color/white" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/easy_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:backgroundTint="@color/easy_green"
+        android:background="@drawable/rounded_green_corner"
         android:text="Easy (30-40 clues)"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/medium_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/medium_yellow"
+        android:background="@drawable/rounded_yellow_corner"
         android:text="Medium (41-50 clues)"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/hard_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/hard_orange"
+        android:background="@drawable/rounded_orange_corner"
         android:text="Hard (51-60 clues)"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/expert_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/expert_red"
+        android:background="@drawable/rounded_red_corner"
         android:text="Expert (61+ clues)"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/start_puzzle_button"
@@ -62,5 +66,5 @@
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/primary_blue"
         android:text="Start Puzzle"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 </LinearLayout>

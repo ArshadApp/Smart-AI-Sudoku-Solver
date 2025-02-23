@@ -7,10 +7,12 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class SudokuGridView extends View {
+    private static final String TAG = "SudokuGridView";
     private int[][] grid = new int[9][9]; // 9x9 grid to store Sudoku puzzle
     private int selectedRow = -1;
     private int selectedCol = -1;
@@ -22,30 +24,46 @@ public class SudokuGridView extends View {
     }
 
     public void setPuzzle(int[] puzzle) {
+        if (puzzle == null || puzzle.length != 81) {
+            Log.e(TAG, "Invalid puzzle data: null or wrong length");
+            return;
+        }
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 grid[i][j] = puzzle[i * 9 + j];
             }
         }
+        Log.d(TAG, "Puzzle set successfully");
         invalidate();
     }
 
     public void fillSelectedCell(int value) {
-        if (selectedRow != -1 && grid[selectedRow][selectedCol] != -1) {
-            // Use Handler to ensure UI update happens on the main thread
+        if (selectedRow != -1 && selectedCol != -1 && grid[selectedRow][selectedCol] == 0) {
             handler.post(() -> {
                 grid[selectedRow][selectedCol] = value;
                 invalidate(); // Redraw immediately
+                Log.d(TAG, "Filled cell [" + selectedRow + "][" + selectedCol + "] with " + value);
             });
+        } else {
+            Log.w(TAG, "Cannot fill cell: invalid selection or cell not empty");
         }
     }
 
     public Move getHint() {
-        return new Move(0, 0, 5); // Simplified hint logic (replace with actual implementation)
+        // Simplified hint logic (replace with actual implementation)
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (grid[i][j] == 0) {
+                    return new Move(i, j, 5); // Example hint: place 5 in first empty cell
+                }
+            }
+        }
+        return new Move(0, 0, 0); // No hint if grid is full
     }
 
     public void solveAnimated() {
-        // Implement solver with animation (placeholder for now)
+        // Placeholder for animated solving (implement actual logic)
+        Log.d(TAG, "Solving puzzle animated (placeholder)");
     }
 
     public int[][] getGrid() {
@@ -61,7 +79,6 @@ public class SudokuGridView extends View {
             canvas.drawLine(0, i * cellSize, getWidth(), i * cellSize, paint);
             canvas.drawLine(i * cellSize, 0, i * cellSize, getHeight(), paint);
         }
-        // Add bold 3x3 borders, numbers, and highlights here (implement as needed)
         drawNumbers(canvas, cellSize);
     }
 
@@ -94,8 +111,11 @@ public class SudokuGridView extends View {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             selectedRow = (int) (event.getY() / (getHeight() / 9));
             selectedCol = (int) (event.getX() / (getWidth() / 9));
-            invalidate();
-            return true;
+            if (selectedRow >= 0 && selectedRow < 9 && selectedCol >= 0 && selectedCol < 9) {
+                Log.d(TAG, "Selected cell [" + selectedRow + "][" + selectedCol + "]");
+                invalidate();
+                return true;
+            }
         }
         return super.onTouchEvent(event);
     }

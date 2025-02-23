@@ -28,21 +28,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:columnCount="2"
+        android:columnCount="5"
         android:rowCount="5"
         app:layout_constraintTop_toBottomOf="@id/sudoku_grid"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        <Button android:id="@+id/num_1" android:text="1" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
-        <Button android:id="@+id/num_2" android:text="2" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
-        <Button android:id="@+id/num_3" android:text="3" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
-        <Button android:id="@+id/num_4" android:text="4" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
-        <Button android:id="@+id/num_5" android:text="5" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
-        <Button android:id="@+id/num_6" android:text="6" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
-        <Button android:id="@+id/num_7" android:text="7" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
-        <Button android:id="@+id/num_8" android:text="8" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
-        <Button android:id="@+id/num_9" android:text="9" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
-        <Button android:id="@+id/num_x" android:text="X" android:layout_width="50dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_1" android:text="1" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_2" android:text="2" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_3" android:text="3" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_4" android:text="4" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_5" android:text="5" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_6" android:text="6" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_7" android:text="7" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_8" android:text="8" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_9" android:text="9" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
+        <Button android:id="@+id/num_x" android:text="X" android:layout_width="60dp" android:layout_height="50dp" android:layout_margin="8dp" />
     </GridLayout>
 
     <Button

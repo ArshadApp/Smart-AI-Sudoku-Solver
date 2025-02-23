@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/toolbar" />
 
-    <com.example.smartaisudokusolver.SudokuGridView
+    <com.example.smart_ai_sudoku_solver.SudokuGridView
         android:id="@+id/sudoku_grid"
         android:layout_width="360dp"
         android:layout_height="360dp"
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:columnCount="2"
+        android:columnCount="5"
         android:rowCount="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,70 +47,70 @@
 
         <Button
             android:id="@+id/num_1"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="1" />
 
         <Button
             android:id="@+id/num_2"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="2" />
 
         <Button
             android:id="@+id/num_3"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="3" />
 
         <Button
             android:id="@+id/num_4"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="4" />
 
         <Button
             android:id="@+id/num_5"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="5" />
 
         <Button
             android:id="@+id/num_6"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="6" />
 
         <Button
             android:id="@+id/num_7"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="7" />
 
         <Button
             android:id="@+id/num_8"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="8" />
 
         <Button
             android:id="@+id/num_9"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="9" />
 
         <Button
             android:id="@+id/num_x"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:text="X" />
@@ -160,6 +160,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Cells Filled: 0/81"
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

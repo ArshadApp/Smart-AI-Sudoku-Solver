@@ -32,7 +32,14 @@ public class GameActivity extends AppCompatActivity {
         int[] puzzle = getIntent().getIntArrayExtra("puzzle");
         if (puzzle != null && puzzle.length == 81) {
             Log.d(TAG, "Received valid puzzle data: " + puzzle.length + " cells");
-            gridView.setPuzzle(puzzle);
+            try {
+                gridView.setPuzzle(puzzle);
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to set puzzle: " + e.getMessage(), e);
+                Toast.makeText(this, "Error loading puzzle. Returning to selection.", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
         } else {
             Log.e(TAG, "Invalid or null puzzle data received");
             Toast.makeText(this, "Invalid puzzle data. Returning to selection.", Toast.LENGTH_SHORT).show();
