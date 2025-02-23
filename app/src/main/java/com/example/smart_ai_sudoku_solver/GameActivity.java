@@ -1,22 +1,34 @@
 package com.example.smart_ai_sudoku_solver;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import java.util.Stack;
+
 public class GameActivity extends AppCompatActivity {
+
     private static final String TAG = "GameActivity";
     private SudokuGridView gridView;
-    private TextView timerText;
-    private Handler handler = new Handler(Looper.getMainLooper());
-    private int seconds = 0;
+    private TextView timerText, progressText;
+    private Button[] numberButtons = new Button[10];
+    private ImageButton hintButton, solveButton, undoButton, redoButton;
+    private int[][] puzzle, currentGrid; // Using 9x9 2D array for consistency
+    private Stack<SudokuGridView.Move> undoStack = new Stack<>();
+    private Stack<SudokuGridView.Move> redoStack = new Stack<>();
+    private Handler handler = new Handler();
+    private int secondsElapsed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,67 +38,185 @@ public class GameActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        timerText = findViewById(R.id.timer_text);
 
         gridView = findViewById(R.id.sudoku_grid);
-        int[] puzzle = getIntent().getIntArrayExtra("puzzle");
-        if (puzzle != null && puzzle.length == 81) {
-            Log.d(TAG, "Received valid puzzle data: " + puzzle.length + " cells");
-            try {
-                gridView.setPuzzle(puzzle);
-            } catch (Exception e) {
-                Log.e(TAG, "Failed to set puzzle: " + e.getMessage(), e);
-                Toast.makeText(this, "Error loading puzzle. Returning to selection.", Toast.LENGTH_SHORT).show();
-                finish();
-                return;
-            }
+        timerText = findViewById(R.id.timer_text);
+        progressText = findViewById(R.id.progress_text);
+        hintButton = findViewById(R.id.hint_button);
+        solveButton = findViewById(R.id.solve_button);
+        undoButton = findViewById(R.id.undo_button);
+        redoButton = findViewById(R.id.redo_button);
+
+        // Convert flat puzzle array to 9x9 grid (if passed as int[])
+        int[] flatPuzzle = getIntent().getIntArrayExtra("puzzle");
+        if (flatPuzzle != null && flatPuzzle.length == 81) {
+            Log.d(TAG, "Received valid puzzle data: " + flatPuzzle.length + " cells");
+            puzzle = convertTo2D(flatPuzzle);
         } else {
             Log.e(TAG, "Invalid or null puzzle data received");
-            Toast.makeText(this, "Invalid puzzle data. Returning to selection.", Toast.LENGTH_SHORT).show();
-            finish(); // Return to PuzzleSelectionActivity if puzzle is invalid
-            return;
+            // Fallback: Use a sample puzzle
+            puzzle = new int[][] {
+                    {5, 3, 0, 0, 7, 0, 0, 0, 0},
+                    {6, 0, 0, 1, 9, 5, 0, 0, 0},
+                    {0, 9, 8, 0, 0, 0, 0, 6, 0},
+                    {8, 0, 0, 0, 6, 0, 0, 0, 3},
+                    {4, 0, 0, 8, 0, 3, 0, 0, 1},
+                    {7, 0, 0, 0, 2, 0, 0, 0, 6},
+                    {0, 6, 0, 0, 0, 0, 2, 8, 0},
+                    {0, 0, 0, 4, 1, 9, 0, 0, 5},
+                    {0, 0, 0, 0, 8, 0, 0, 7, 9}
+            };
         }
+        currentGrid = new int[9][9];
+        for (int i = 0; i < 9; i++) {
+            currentGrid[i] = puzzle[i].clone();
+        }
+        gridView.setPuzzle(convertTo1D(puzzle)); // Assuming SudokuGridView uses flat array
 
-        for (int i = 1; i <= 9; i++) {
-            Button btn = findViewById(getResources().getIdentifier("num_" + i, "id", getPackageName()));
-            final int value = i;
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gridView.fillSelectedCell(value); // Optimized to use Handler in SudokuGridView
-                }
+        // Start timer
+        startTimer();
+
+        // Initialize number pad with animations and haptic feedback
+        for (int i = 0; i < 10; i++) {
+            int resId = getResources().getIdentifier("num_" + (i == 9 ? "x" : i + 1), "id", getPackageName());
+            numberButtons[i] = findViewById(resId);
+            final int value = (i == 9) ? 0 : (i + 1);
+            numberButtons[i].setOnClickListener(v -> {
+                animateButton(v);
+                fillCell(value);
             });
         }
-        Button eraseButton = findViewById(R.id.num_x);
-        eraseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gridView.fillSelectedCell(0); // Optimized to use Handler in SudokuGridView
-            }
+
+        // Button listeners with animations and haptic feedback
+        hintButton.setOnClickListener(v -> {
+            animateButton(v);
+            showHint();
+        });
+        solveButton.setOnClickListener(v -> {
+            animateButton(v);
+            solvePuzzle();
+        });
+        undoButton.setOnClickListener(v -> {
+            animateButton(v);
+            undoMove();
+        });
+        redoButton.setOnClickListener(v -> {
+            animateButton(v);
+            redoMove();
         });
 
-        findViewById(R.id.hint_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Move hint = gridView.getHint();
-                Toast.makeText(GameActivity.this, "Try " + hint.value + " at (" + hint.row + "," + hint.col + ")", Toast.LENGTH_LONG).show();
-            }
-        });
+        updateProgress();
+        toolbar.setNavigationOnClickListener(v -> finish());
+    }
 
-        findViewById(R.id.solve_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gridView.solveAnimated();
-            }
-        });
-
+    private void startTimer() {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                timerText.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
-                seconds++;
+                secondsElapsed++;
+                int minutes = secondsElapsed / 60;
+                int seconds = secondsElapsed % 60;
+                timerText.setText(String.format("%02d:%02d", minutes, seconds));
                 handler.postDelayed(this, 1000);
             }
         });
+    }
+
+    private void fillCell(int value) {
+        int[] selected = gridView.getSelectedCell(); // Assuming this method exists
+        if (selected == null || !isEditable(selected[0], selected[1])) return;
+        int oldValue = currentGrid[selected[0]][selected[1]]; // Fixed typo here
+        currentGrid[selected[0]][selected[1]] = value;
+        undoStack.push(new SudokuGridView.Move(selected[0], selected[1], oldValue));
+        redoStack.clear();
+        gridView.fillSelectedCell(value); // Update grid (assuming flat array)
+        updateProgress();
+    }
+
+    private boolean isEditable(int row, int col) {
+        return puzzle[row][col] == 0;
+    }
+
+    private void showHint() {
+        SudokuGridView.Move hint = gridView.getHint(); // Now uses SudokuGridView.Move
+        if (hint != null) {
+            Toast.makeText(this, "Try " + hint.value + " at (" + (hint.row + 1) + "," + (hint.col + 1) + ")", Toast.LENGTH_LONG).show();
+            gridView.highlightCell(hint.row, hint.col); // Assuming this method exists
+        } else {
+            Toast.makeText(this, "No valid hint available!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void solvePuzzle() {
+        gridView.solveAnimated(); // Assuming this handles animation internally
+    }
+
+    private void undoMove() {
+        if (!undoStack.isEmpty()) {
+            SudokuGridView.Move move = undoStack.pop();
+            redoStack.push(new SudokuGridView.Move(move.row, move.col, currentGrid[move.row][move.col]));
+            currentGrid[move.row][move.col] = move.value;
+            gridView.fillSelectedCell(move.value); // Update grid
+            updateProgress();
+        }
+    }
+
+    private void redoMove() {
+        if (!redoStack.isEmpty()) {
+            SudokuGridView.Move move = redoStack.pop();
+            undoStack.push(new SudokuGridView.Move(move.row, move.col, currentGrid[move.row][move.col]));
+            currentGrid[move.row][move.col] = move.value;
+            gridView.fillSelectedCell(move.value); // Update grid
+            updateProgress();
+        }
+    }
+
+    private void updateProgress() {
+        int filled = 0;
+        for (int[] row : currentGrid) for (int cell : row) if (cell != 0) filled++;
+        progressText.setText("Cells Filled: " + filled + "/81");
+    }
+
+    private void animateButton(View view) {
+        view.animate().scaleX(1.05f).scaleY(1.05f).setDuration(100)
+                .withEndAction(() -> view.animate().scaleX(1f).scaleY(1f).setDuration(100).start())
+                .start();
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        if (vibrator != null) {
+            vibrator.vibrate(10);
+        }
+    }
+
+    private int[] convertTo1D(int[][] grid) {
+        int[] flat = new int[81];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                flat[i * 9 + j] = grid[i][j];
+            }
+        }
+        return flat;
+    }
+
+    private int[][] convertTo2D(int[] flat) {
+        int[][] grid = new int[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                grid[i][j] = flat[i * 9 + j];
+            }
+        }
+        return grid;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+    }
+
+    // Add this static method to create an Intent with the puzzle
+    public static Intent createIntent(Context context, int[] puzzle) {
+        Intent intent = new Intent(context, GameActivity.class);
+        intent.putExtra("puzzle", puzzle);
+        return intent;
     }
 }

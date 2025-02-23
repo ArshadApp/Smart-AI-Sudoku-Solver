@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:id="@+id/main"> <!-- Add an ID here if not present -->
+    android:padding="16dp">
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/dark_mode_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dark Mode"
+        android:textColor="#000000"
         android:textSize="16sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Animation Speed"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp" />
+        android:textColor="#000000"
+        android:textSize="16sp" />
 
     <SeekBar
-        android:id="@+id/animation_speed_seekbar"
+        android:id="@+id/animation_speed_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="900" />
+        android:max="900"
+        android:progress="400" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/reset_button"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#1976D2"
         android:text="Reset Preferences"
-        android:backgroundTint="@color/primary_blue"
-        android:textColor="@color/white"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp" />
+        android:textColor="#FFFFFF" />
+
 </LinearLayout>

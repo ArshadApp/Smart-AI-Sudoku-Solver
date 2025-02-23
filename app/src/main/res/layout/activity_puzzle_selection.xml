@@ -1,70 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@android:color/white">
+    android:padding="16dp">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/primary_blue"
-        android:title="Select Difficulty"
-        android:titleTextColor="@color/white" />
+        android:background="#1976D2"
+        app:navigationIcon="@drawable/ic_back_arrow"
+        app:title="Select Difficulty"
+        app:titleTextColor="#FFFFFF" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/easy_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/easy_green"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_green_corner"
+        android:backgroundTint="#4CAF50"
         android:text="Easy (30-40 clues)"
-        android:textColor="@color/black" />
+        android:textColor="#FFFFFF" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/medium_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/medium_yellow"
         android:background="@drawable/rounded_yellow_corner"
+        android:backgroundTint="#FFCA28"
         android:text="Medium (41-50 clues)"
-        android:textColor="@color/black" />
+        android:textColor="#FFFFFF" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/hard_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/hard_orange"
         android:background="@drawable/rounded_orange_corner"
+        android:backgroundTint="#F4511E"
         android:text="Hard (51-60 clues)"
-        android:textColor="@color/black" />
+        android:textColor="#FFFFFF" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/expert_button"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/expert_red"
         android:background="@drawable/rounded_red_corner"
+        android:backgroundTint="#D81B60"
         android:text="Expert (61+ clues)"
-        android:textColor="@color/black" />
+        android:textColor="#FFFFFF" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/start_puzzle_button"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp"
-        android:backgroundTint="@color/primary_blue"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#1976D2"
         android:text="Start Puzzle"
-        android:textColor="@color/black" />
+        android:textColor="#FFFFFF" />
+
 </LinearLayout>

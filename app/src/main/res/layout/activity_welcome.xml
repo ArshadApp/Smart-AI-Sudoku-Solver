@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,58 +9,64 @@
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Smart AI Sudoku Solver"
-        android:textSize="32sp"
-        android:fontFamily="sans-serif-bold"
-        android:textColor="@color/white"
         android:layout_marginTop="100dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="sans-serif"
+        android:text="Smart AI Sudoku Solver"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/subtitle_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Challenge your mind or let AI solve it!"
-        android:textSize="18sp"
-        android:textColor="#E0E0E0"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/title_text"
+        android:fontFamily="sans-serif"
+        android:text="Challenge your mind or let AI solve it!"
+        android:textColor="#E0E0E0"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/title_text" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/play_now_button"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/blue"
         android:text="Play Now"
-        android:backgroundTint="#17314D"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/subtitle_text" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/custom_puzzle_button"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:text="Custom Puzzle"
-        android:backgroundTint="@color/medium_yellow"
-        android:textColor="@color/white"
         android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/play_now_button"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#03A9F4"
+        android:text="Custom Puzzle"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/play_now_button" />
 
     <Button
         android:id="@+id/settings_button"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:src="@android:drawable/ic_menu_preferences"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ic_settings"
         android:backgroundTint="#757575"
-        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

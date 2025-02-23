@@ -1,15 +1,21 @@
 package com.example.smart_ai_sudoku_solver;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class CustomPuzzleActivity extends AppCompatActivity {
+
     private SudokuGridView gridView;
+    private Button[] numberButtons = new Button[10];
+    private Button checkButton;
+    private int[] grid = new int[81]; // Flat 9x9 grid (81 cells)
+    private Vibrator vibrator; // For haptic feedback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,140 +27,103 @@ public class CustomPuzzleActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         gridView = findViewById(R.id.sudoku_grid);
+        checkButton = findViewById(R.id.check_puzzle_button);
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        for (int i = 1; i <= 9; i++) {
-            Button btn = findViewById(getResources().getIdentifier("num_" + i, "id", getPackageName()));
-            final int value = i;
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gridView.fillSelectedCell(value);
-                }
+        // Initialize number pad with animations and haptic feedback
+        for (int i = 0; i < 10; i++) {
+            int resId = getResources().getIdentifier("number_" + (i == 9 ? "x" : (i + 1)), "id", getPackageName());
+            numberButtons[i] = findViewById(resId);
+            final int value = (i == 9) ? 0 : (i + 1);
+            numberButtons[i].setOnClickListener(v -> {
+                animateButton(v);
+                fillCell(value);
             });
         }
-        findViewById(R.id.num_x).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gridView.fillSelectedCell(0);
+
+        // Set initial empty grid (all 0s)
+        gridView.setPuzzle(grid); // All cells editable (0s indicate editable)
+
+        checkButton.setOnClickListener(v -> {
+            animateButton(v);
+            if (isValidPuzzle()) {
+                // Pass flat array to GameActivity
+                int[] puzzle = grid.clone();
+                startActivity(GameActivity.createIntent(this, puzzle));
+            } else {
+                Toast.makeText(this, "Invalid or unsolvable puzzle!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        findViewById(R.id.check_puzzle_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int[][] grid = gridView.getGrid();
-                if (isValidPuzzle(grid)) {
-                    Intent intent = new Intent(CustomPuzzleActivity.this, GameActivity.class);
-                    int[] flatGrid = new int[81];
-                    for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 9; j++) {
-                            flatGrid[i * 9 + j] = grid[i][j];
-                        }
-                    }
-                    intent.putExtra("puzzle", flatGrid);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(CustomPuzzleActivity.this, "Invalid or unsolvable puzzle!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
-    private boolean isValidPuzzle(int[][] grid) {
-        if (grid == null || grid.length != 9 || grid[0].length != 9) {
-            return false;
-        }
+    private void fillCell(int value) {
+        int[] selected = gridView.getSelectedCell(); // Assuming this returns {row, col}
+        if (selected == null) return;
+        int index = selected[0] * 9 + selected[1]; // Convert 2D to 1D index
+        grid[index] = value;
+        gridView.fillSelectedCell(value); // Update grid view
+    }
 
-        // Check for conflicts (duplicates in rows, columns, and 3x3 boxes)
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                int num = grid[row][col];
-                if (num != 0) { // Skip empty cells
-                    if (!isSafe(grid, row, col, num)) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        // Check if the puzzle is solvable and has a unique solution
-        int[][] tempGrid = new int[9][9];
+    private boolean isValidPuzzle() {
+        // Check for conflicts in the current state
         for (int i = 0; i < 9; i++) {
-            tempGrid[i] = grid[i].clone();
-        }
-
-        // Try to solve the puzzle
-        if (!solveSudoku(tempGrid, 0, 0)) {
-            return false; // Puzzle is not solvable
-        }
-
-        // Check for unique solution (simplified: solve again after modifying one cell)
-        int[][] tempGrid2 = new int[9][9];
-        for (int i = 0; i < 9; i++) {
-            tempGrid2[i] = grid[i].clone();
-        }
-        // Find an empty cell to modify
-        boolean foundEmpty = false;
-        int emptyRow = -1, emptyCol = -1;
-        for (int i = 0; i < 9 && !foundEmpty; i++) {
             for (int j = 0; j < 9; j++) {
-                if (tempGrid2[i][j] == 0) {
-                    emptyRow = i;
-                    emptyCol = j;
-                    foundEmpty = true;
-                    break;
+                int index = i * 9 + j;
+                if (grid[index] != 0 && !isSafe(i, j, grid[index])) {
+                    return false;
                 }
             }
         }
-        if (foundEmpty) {
-            tempGrid2[emptyRow][emptyCol] = 1; // Try a number
-            if (solveSudoku(tempGrid2, 0, 0)) {
-                return false; // Multiple solutions exist
-            }
-        }
-
-        return true; // Valid and unique solution
+        // Check if solvable (simplified version)
+        int[] copy = grid.clone();
+        return solveGrid(copy);
     }
 
-    private boolean isSafe(int[][] grid, int row, int col, int num) {
+    private boolean isSafe(int row, int col, int num) {
         // Check row
-        for (int x = 0; x < 9; x++) {
-            if (x != col && grid[row][x] == num) return false;
+        for (int j = 0; j < 9; j++) {
+            if (j != col && grid[row * 9 + j] == num) return false;
         }
         // Check column
-        for (int x = 0; x < 9; x++) {
-            if (x != row && grid[x][col] == num) return false;
+        for (int i = 0; i < 9; i++) {
+            if (i != row && grid[i * 9 + col] == num) return false;
         }
         // Check 3x3 box
         int startRow = row - row % 3;
         int startCol = col - col % 3;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if ((i + startRow != row || j + startCol != col) && grid[i + startRow][j + startCol] == num) {
-                    return false;
-                }
+                int r = startRow + i, c = startCol + j;
+                if ((r != row || c != col) && grid[r * 9 + c] == num) return false;
             }
         }
         return true;
     }
 
-    private boolean solveSudoku(int[][] grid, int row, int col) {
-        if (row == 9) {
-            return true;
-        }
-        if (col == 9) {
-            return solveSudoku(grid, row + 1, 0);
-        }
-        if (grid[row][col] != 0) {
-            return solveSudoku(grid, row, col + 1);
-        }
-        for (int num = 1; num <= 9; num++) {
-            if (isSafe(grid, row, col, num)) {
-                grid[row][col] = num;
-                if (solveSudoku(grid, row, col + 1)) return true;
-                grid[row][col] = 0;
+    private boolean solveGrid(int[] grid) {
+        for (int i = 0; i < 81; i++) {
+            if (grid[i] == 0) {
+                for (int num = 1; num <= 9; num++) {
+                    if (isSafe(i / 9, i % 9, num)) {
+                        grid[i] = num;
+                        if (solveGrid(grid)) return true;
+                        grid[i] = 0;
+                    }
+                }
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    private void animateButton(View view) {
+        view.animate().scaleX(1.05f).scaleY(1.05f).setDuration(100)
+                .withEndAction(() -> view.animate().scaleX(1f).scaleY(1f).setDuration(100).start())
+                .start();
+        if (vibrator != null) {
+            vibrator.vibrate(10);
+        }
     }
 }

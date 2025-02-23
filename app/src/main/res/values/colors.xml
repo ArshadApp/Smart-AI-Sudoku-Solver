@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="primary_blue">#1976D2</color> <!-- For Toolbar and start_puzzle_button background -->
-    <color name="easy_green">#4CAF50</color> <!-- For easy_button background -->
-    <color name="medium_yellow">#FFCA28</color> <!-- For medium_button background -->
-    <color name="hard_orange">#F4511E</color> <!-- For hard_button background -->
-    <color name="expert_red">#D81B60</color> <!-- For expert_button background -->
-    <color name="my_light_primary">@color/primary_blue</color> <!-- Optional custom primary color -->
+    <color name="blue">#1976D2</color>
+    <color name="white">#FFFFFF</color>
+    <color name="light_gray">#E0E0E0</color>
+    <color name="dark_gray">#757575</color>
+    <color name="green">#4CAF50</color>
+    <color name="yellow">#FFCA28</color>
+    <color name="orange">#F4511E</color>
+    <color name="red">#D81B60</color>
+    <color name="gray">#B0BEC5</color>
 </resources>
