@@ -22,11 +22,12 @@ public class SudokuGridView extends View {
 
     private void initPaints() {
         cellPaint = new Paint();
-        cellPaint.setColor(Color.WHITE);
+        cellPaint.setColor(Color.WHITE); // White background for cells
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(Color.BLACK); // Black text for numbers
         textPaint.setTextSize(40f);
         textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setAntiAlias(true); // Improve text rendering
         borderPaint = new Paint();
         borderPaint.setColor(Color.BLACK);
         borderPaint.setStrokeWidth(2f);
@@ -36,12 +37,12 @@ public class SudokuGridView extends View {
         highlightPaint = new Paint();
         highlightPaint.setColor(Color.YELLOW);
         highlightPaint.setStyle(Paint.Style.STROKE);
-        highlightPaint.setStrokeWidth(2f);
+        highlightPaint.setStrokeWidth(4f); // Thicker highlight for visibility
     }
 
     public void setPuzzle(int[] puzzle) {
         this.puzzle = puzzle.clone();
-        invalidate();
+        invalidate(); // Ensure the view redraws after setting the puzzle
     }
 
     public void fillSelectedCell(int value) {
@@ -127,41 +128,54 @@ public class SudokuGridView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int size = Math.min(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
-        setMeasuredDimension(size, size);
+        setMeasuredDimension(size, size); // Ensure square grid
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        cellSize = w / 9;
+        cellSize = w / 9; // Calculate cell size based on the smaller dimension
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (puzzle == null) return;
+        if (puzzle == null || puzzle.length != 81) return;
 
+        // Draw the grid background (white)
+        canvas.drawColor(Color.WHITE);
+
+        // Draw each cell
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 int index = i * 9 + j;
                 int x = j * cellSize;
                 int y = i * cellSize;
-                canvas.drawRect(x, y, x + cellSize, y + cellSize, cellPaint);
+                canvas.drawRect(x, y, x + cellSize, y + cellSize, cellPaint); // Draw white cell background
+
+                // Draw the number if it exists
                 if (puzzle[index] != 0) {
                     String text = String.valueOf(puzzle[index]);
                     float textX = x + cellSize / 2f;
                     float textY = y + cellSize / 2f - (textPaint.descent() + textPaint.ascent()) / 2;
                     canvas.drawText(text, textX, textY, textPaint);
                 }
-                canvas.drawRect(x, y, x + cellSize, y + cellSize, borderPaint);
+
+                // Draw thin grid lines
+                canvas.drawLine(x, y, x + cellSize, y, borderPaint); // Top
+                canvas.drawLine(x, y, x, y + cellSize, borderPaint); // Left
+                canvas.drawLine(x + cellSize, y, x + cellSize, y + cellSize, borderPaint); // Right
+                canvas.drawLine(x, y + cellSize, x + cellSize, y + cellSize, borderPaint); // Bottom
             }
         }
 
+        // Draw bold lines for 3x3 boxes
         for (int i = 0; i <= 9; i += 3) {
-            canvas.drawLine(i * cellSize, 0, i * cellSize, getHeight(), boldBorderPaint);
-            canvas.drawLine(0, i * cellSize, getWidth(), i * cellSize, boldBorderPaint);
+            canvas.drawLine(i * cellSize, 0, i * cellSize, getHeight(), boldBorderPaint); // Vertical
+            canvas.drawLine(0, i * cellSize, getWidth(), i * cellSize, boldBorderPaint); // Horizontal
         }
 
+        // Draw highlight for selected cell
         if (selectedRow != -1 && selectedCol != -1) {
             int x = selectedCol * cellSize;
             int y = selectedRow * cellSize;
@@ -174,13 +188,15 @@ public class SudokuGridView extends View {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             selectedRow = (int) (event.getY() / cellSize);
             selectedCol = (int) (event.getX() / cellSize);
-            invalidate();
-            return true;
+            if (selectedRow >= 0 && selectedRow < 9 && selectedCol >= 0 && selectedCol < 9) {
+                invalidate();
+                return true;
+            }
         }
         return super.onTouchEvent(event);
     }
 
-    // Make Move public so GameActivity can access it
+    // Move class nested in SudokuGridView (public for GameActivity access)
     public static class Move {
         int row, col, value;
 
